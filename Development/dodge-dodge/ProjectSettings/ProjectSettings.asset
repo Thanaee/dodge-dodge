@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 30
-  productGUID: a2c53b67ee666421db179265061a6ae0
+  productGUID: 2882b35d9f3b64a05b6210c49725f874
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: project1-smashrun
+  productName: dodge-dodge
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -520,7 +520,7 @@ PlayerSettings:
   ps4GarlicHeapSize: 2048
   ps4ProGarlicHeapSize: 2560
   playerPrefsMaxSize: 32768
-  ps4Passcode: DVKXKAo3LGbdm50mAvEtS1pljZ8XKqpA
+  ps4Passcode: tcbJuBXDCHziIOlFkuPQ3ZZ1rbSOvZiH
   ps4pnSessions: 1
   ps4pnPresence: 1
   ps4pnFriends: 1
@@ -612,14 +612,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: project1-smashrun
+  metroPackageName: dodge-dodge
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: project1-smashrun
+  metroApplicationDescription: dodge-dodge
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -690,10 +690,10 @@ PlayerSettings:
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
   enableDirectStorage: 0
-  cloudProjectId: 969ca46e-1c5e-4bd7-a11e-4307b0959fc4
+  cloudProjectId: 6b13908e-587a-4044-b147-6b825a604891
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: project1-smashrun
+  projectName: dodge-dodge
   organizationId: thanaaa
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
