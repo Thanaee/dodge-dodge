@@ -4,6 +4,7 @@ public class Obstacle : MonoBehaviour
 {
    [SerializeField] private float minSize = 0.1f;
    [SerializeField] private float maxSize = 4.0f;
+   [SerializeField] private GameObject bounceEffectPrefab;
 
    [SerializeField] private float minSpeed = 50f;
    [SerializeField] private float maxSpeed = 150f;
@@ -31,4 +32,13 @@ public class Obstacle : MonoBehaviour
     {
         
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+         Vector2 contactPoint = collision.GetContact(0).point;
+            GameObject bounceEffect = Instantiate (bounceEffectPrefab, contactPoint, Quaternion.identity);
+
+            Destroy(bounceEffect, 1f);
+    }
+   
 }
