@@ -5,60 +5,106 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    private float elapsedTime = 0f;
+    private float score = 0f;
+    [SerializeField] private float scoreMultiplier = 10f;
      
-     private float elapsedTime = 0f;
-     private float score = 0f;
-     [SerializeField] private float scoreMultiplier = 10f;
-     
-     
-     [SerializeField] private float thrustForce = 1f;
-     Rigidbody2D rb;
+    [SerializeField] private float thrustForce = 1f;
+    Rigidbody2D rb;
 
-     [SerializeField] private UIDocument uiDocument;
+    [SerializeField] private UIDocument uiDocument;
+    [SerializeField] private string mainMenuSceneName = "MainMenu";
+
+    // UI Elemente
     private Label scoreText;
     private Label highscoreText; 
     private Button restartButton;
+    private Button hudPauseButton;
+    private Button hudMenuButton;
+    private VisualElement pauseOverlay;
+    private Button resumeButton;
+    private Button pauseMenuButton;
 
     [SerializeField] private GameObject explosionEffect;
-
-     [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private GameObject boosterFlame;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private bool isPaused = false;
+    private bool isGameOver = false;
+
     void Start()
     {
-       rb = GetComponent<Rigidbody2D>();
-       scoreText = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
-       highscoreText = uiDocument.rootVisualElement.Q<Label>("HighscoreLabel");
-       restartButton = uiDocument.rootVisualElement.Q<Button>("RestartButton");
-        if (highscoreText != null)
+        // Zeit immer zuruecksetzen, falls vorher pausiert war
+        Time.timeScale = 1f;
+
+        rb = GetComponent<Rigidbody2D>();
+
+        if (uiDocument != null && uiDocument.rootVisualElement != null)
         {
-            highscoreText.style.display = DisplayStyle.None;
+            var root = uiDocument.rootVisualElement;
+
+            scoreText = root.Q<Label>("ScoreLabel");
+            highscoreText = root.Q<Label>("HighscoreLabel");
+            restartButton = root.Q<Button>("RestartButton");
+            hudPauseButton = root.Q<Button>("HudPauseButton");
+            hudMenuButton = root.Q<Button>("HudMenuButton");
+            pauseOverlay = root.Q<VisualElement>("PauseOverlay");
+            resumeButton = root.Q<Button>("ResumeButton");
+            pauseMenuButton = root.Q<Button>("PauseMenuButton");
+
+            if (highscoreText != null)
+            {
+                highscoreText.style.display = DisplayStyle.None;
+            }
+            
+            if (restartButton != null)
+            {
+                restartButton.style.display = DisplayStyle.None;
+                restartButton.clicked += ReloadScene; 
+            }
+
+            if (hudPauseButton != null) hudPauseButton.clicked += TogglePause;
+            if (resumeButton != null) resumeButton.clicked += TogglePause;
+            if (hudMenuButton != null) hudMenuButton.clicked += LoadMainMenu;
+            if (pauseMenuButton != null) pauseMenuButton.clicked += LoadMainMenu;
         }
-        
-       if (restartButton != null)
-       {
-        restartButton.style.display = DisplayStyle.None;
-        restartButton.clicked += ReloadScene; 
-       }
-       
     }
 
-    // Update is called once per frame
     void Update()
     {
+        
+        if (isGameOver) return;
+
+        //key usages esc and space
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                TogglePause();
+            }
+            else if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                if (isPaused) LoadMainMenu();
+                else TogglePause();
+            }
+        }
+
+        if (isPaused) return;
+
         elapsedTime += Time.deltaTime;
         score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
-        Debug.Log("Score:" + score);
-        scoreText.text = "Score: " + score;
         
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
+        }
 
-        if (Mouse.current.leftButton.isPressed) {
-            // calculate mouse direction
+        
+        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+        {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-            Vector2 direction = (mousePos - transform.position).normalized ;
+            Vector2 direction = (mousePos - transform.position).normalized;
 
-            //move player into direction of mouse
             transform.up = direction;
             rb.AddForce(direction * thrustForce);
 
@@ -68,21 +114,45 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null)
+        {
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                boosterFlame.SetActive(true);
+                if (boosterFlame != null) boosterFlame.SetActive(true);
             }
-                else if (Mouse.current.leftButton.wasReleasedThisFrame)
+            else if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
-                boosterFlame.SetActive(false);
+                if (boosterFlame != null) boosterFlame.SetActive(false);
             }
-
-        
+        }
     }
 
+    
+    public void TogglePause()
+    {
+        if (isGameOver) return;
 
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? 0f : 1f;
+
+        if (pauseOverlay != null)
+        {
+            pauseOverlay.style.display = isPaused ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+    }
+
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainMenuSceneName);
+    }
+
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (isGameOver) return;
+        isGameOver = true;
+
         int finalScore = Mathf.FloorToInt(score);
         int bestScore = PlayerPrefs.GetInt("Highscore", 0);
         if (finalScore > bestScore)
@@ -98,19 +168,26 @@ public class PlayerController : MonoBehaviour
             highscoreText.style.display = DisplayStyle.Flex;
         }
         
-        Destroy(gameObject);
-        Instantiate(explosionEffect, transform.position, transform.rotation);
-        restartButton.style.display = DisplayStyle.Flex;
+        if (restartButton != null)
+        {
+            restartButton.style.display = DisplayStyle.Flex;
+        }
+
+        if (explosionEffect != null)
+        {
+            Instantiate(explosionEffect, transform.position, transform.rotation);
+        }
+
         
+        gameObject.SetActive(false);
     }
 
-    void ReloadScene() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
+    void ReloadScene()
+    {
+        Time.timeScale = 1f; 
         PlayerPrefs.SetInt("Score", Mathf.FloorToInt(score));
         PlayerPrefs.Save();
-        
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
-
 }

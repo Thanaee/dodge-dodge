@@ -1,3 +1,19 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Label text="Score: 0" name="ScoreLabel" style="top: 86px; font-size: 70px; color: rgb(245, 235, 13); left: 800px; width: 267px; right: 43px; -unity-font-definition: url(&quot;project://database/Assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf?fileID=12800000&amp;guid=ca409c1f5c66f4bb58a4e51b1fbbdb0b&amp;type=3#ShareTechMono-Regular&quot;);"/>
+    <!-- ScoreLabel (bleibt genau so wie du es angelegt hast) -->
+    <ui:Label text="Score: 0" name="ScoreLabel" style="position: absolute; top: 86px; font-size: 70px; color: rgb(245, 235, 13); left: 800px; width: 267px; right: 43px; -unity-font-definition: url(&quot;project://database/Assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf?fileID=12800000&amp;guid=ca409c1f5c66f4bb58a4e51b1fbbdb0b&amp;type=3#ShareTechMono-Regular&quot;); -unity-text-align: upper-center; pointer-events: none;" />
+
+    <!-- Oben rechts: Pause- und Menu-Buttons (waehrend des Spiels sichtbar) -->
+    <ui:Button text="II" name="HudPauseButton" style="position: absolute; top: 25px; right: 110px; width: 50px; height: 50px; font-size: 24px; -unity-font-style: bold; border-radius: 8px;" />
+    <ui:Button text="Menu" name="HudMenuButton" style="position: absolute; top: 25px; right: 25px; height: 50px; padding-left: 15px; padding-right: 15px; font-size: 20px; -unity-font-style: bold; border-radius: 8px;" />
+
+    <!-- Highscore & Restart Button (erst nach dem Verlieren sichtbar) -->
+    <ui:Label text="Highscore: 0" name="HighscoreLabel" style="position: absolute; top: 170px; font-size: 50px; color: rgb(245, 235, 13); left: 750px; width: 380px; -unity-font-definition: url(&quot;project://database/Assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf?fileID=12800000&amp;guid=ca409c1f5c66f4bb58a4e51b1fbbdb0b&amp;type=3#ShareTechMono-Regular&quot;); -unity-text-align: middle-center; display: none;" />
+    <ui:Button text="Restart" name="RestartButton" style="position: absolute; top: 570px; left: 860px; font-size: 40px; -unity-font-style: bold; border-radius: 10px; display: none;" />
+
+    <!-- Pause-Overlay (erscheint bei Space oder Klick auf den Pause-Button) -->
+    <ui:VisualElement name="PauseOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.65); justify-content: center; align-items: center; display: none;">
+        <ui:Label text="PAUSE" style="font-size: 60px; color: rgb(255, 255, 255); -unity-font-style: bold; margin-bottom: 25px;" />
+        <ui:Button text="Resume (Space)" name="ResumeButton" style="width: 250px; height: 55px; font-size: 24px; -unity-font-style: bold; margin-bottom: 15px; border-radius: 8px;" />
+        <ui:Button text="Main Menu (Esc)" name="PauseMenuButton" style="width: 250px; height: 55px; font-size: 24px; -unity-font-style: bold; border-radius: 8px;" />
+    </ui:VisualElement>
 </ui:UXML>
