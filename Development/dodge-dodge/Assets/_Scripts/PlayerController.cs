@@ -180,6 +180,13 @@ public class PlayerController : MonoBehaviour
 
         
         gameObject.SetActive(false);
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayCrash();
+        }
+
+    
     }
 
     void ReloadScene()
