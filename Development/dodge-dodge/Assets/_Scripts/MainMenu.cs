@@ -14,7 +14,12 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        Debug.Log("Spiel wird beendet...");
+        #if UNITY_WEBGL
+        Debug.Log("Im Browser Tab schliessen.");
+        #else
         Application.Quit();
+        #endif
+        
     }
+
 }

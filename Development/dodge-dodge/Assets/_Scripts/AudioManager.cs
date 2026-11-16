@@ -9,6 +9,10 @@ public class AudioManager : MonoBehaviour
    [SerializeField] private AudioClip backgroundMusic;
    [SerializeField] private AudioClip crashSound;
 
+   [Header("Lautstärke (0 bis 1)")]
+   [Range(0f, 1f)] [SerializeField] private float musicVolume = 0.25f;
+   [Range(0f, 1f)] [SerializeField] private float crashVolume = 0.45f;
+
    void Awake()
    {
     if (Instance == null)
@@ -27,6 +31,7 @@ public class AudioManager : MonoBehaviour
         if (musicSource != null && backgroundMusic != null && !musicSource.isPlaying)
         {
             musicSource.clip = backgroundMusic;
+            musicSource.volume = musicVolume;
             musicSource.loop = true;
             musicSource.Play();
         }
@@ -36,7 +41,7 @@ public class AudioManager : MonoBehaviour
     {
         if (musicSource != null && crashSound != null)
         {
-            musicSource.PlayOneShot(crashSound);
+            musicSource.PlayOneShot(crashSound, crashVolume);
         }
     }
 

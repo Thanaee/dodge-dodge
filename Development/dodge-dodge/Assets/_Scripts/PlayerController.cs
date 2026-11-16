@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        // Zeit immer zuruecksetzen, falls vorher pausiert war
+        // reload time
         Time.timeScale = 1f;
 
         rb = GetComponent<Rigidbody2D>();
@@ -89,20 +89,12 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (isPaused) return;
+         if(isGameOver || isPaused) return;
 
-        elapsedTime += Time.deltaTime;
-        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
-        
-        if (scoreText != null)
-        {
-            scoreText.text = "Score: " + score;
-        }
-
-        
-        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+         if (Mouse.current != null && Mouse.current.leftButton.isPressed)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            mousePos.z = 0f;
             Vector2 direction = (mousePos - transform.position).normalized;
 
             transform.up = direction;
@@ -112,6 +104,16 @@ public class PlayerController : MonoBehaviour
             {
                 rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
             }
+        }
+
+        if (isPaused) return;
+
+        elapsedTime += Time.deltaTime;
+        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
+        
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
         }
 
         if (Mouse.current != null)
@@ -126,6 +128,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
 
     
     public void TogglePause()

@@ -9,9 +9,6 @@ public class DynamicPostProcessing : MonoBehaviour
     [SerializeField] private Volume globalVolume;
     [Header("Bloom (Sternen-Glow)")]
     [SerializeField] private float baseBloom = 1.2f;
-
-
-    [Header("Bloom (Sternen-Glow)")]
     [SerializeField] private float boostBloom = 3.0f;
 
     [Header("Vignette (Spannung/ Tunnelblick)")]
@@ -21,6 +18,7 @@ public class DynamicPostProcessing : MonoBehaviour
     private Bloom bloom;
     private Vignette vignette;
     private float survivalTime = 0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
