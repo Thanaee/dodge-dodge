@@ -3910,11 +3910,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   scoreMultiplier: 10
-  thrustForce: 7
+  thrustForce: 25
+  moveSpeed: 10
+  stopSmoothness: 10
   uiDocument: {fileID: 191806457}
   mainMenuSceneName: MainMenu
   explosionEffect: {fileID: 2936429412524359041, guid: 00de485724edd4a2b93098a2832008aa, type: 3}
-  maxSpeed: 9
+  maxSpeed: 12
   boosterFlame: {fileID: 0}
 --- !u!212 &1878479599
 SpriteRenderer:

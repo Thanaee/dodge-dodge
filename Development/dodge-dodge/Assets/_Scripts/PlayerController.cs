@@ -10,11 +10,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float scoreMultiplier = 10f;
      
     [SerializeField] private float thrustForce = 1f;
-    Rigidbody2D rb;
-
+    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] private float stopSmoothness = 10f;
     [SerializeField] private UIDocument uiDocument;
     [SerializeField] private string mainMenuSceneName = "MainMenu";
 
+     Rigidbody2D rb;
     // UI Elemente
     private Label scoreText;
     private Label highscoreText; 
@@ -89,22 +90,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-         if(isGameOver || isPaused) return;
-
-         if (Mouse.current != null && Mouse.current.leftButton.isPressed)
-        {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-            mousePos.z = 0f;
-            Vector2 direction = (mousePos - transform.position).normalized;
-
-            transform.up = direction;
-            rb.AddForce(direction * thrustForce);
-
-            if (rb.linearVelocity.magnitude > maxSpeed)
-            {
-                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-            }
-        }
 
         if (isPaused) return;
 
@@ -126,6 +111,34 @@ public class PlayerController : MonoBehaviour
             {
                 if (boosterFlame != null) boosterFlame.SetActive(false);
             }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if(isGameOver || isPaused) return;
+
+         if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+        {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            mousePos.z = 0f;
+            Vector2 toMouse = (Vector2)mousePos - rb.position;
+
+            if (toMouse.magnitude > 0.1f)
+            {
+                Vector2 direction = toMouse.normalized;
+                transform.up = direction;
+                rb.linearVelocity = direction * moveSpeed;
+            }
+            else
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+
+        else 
+        {
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, Time.fixedDeltaTime * stopSmoothness);
         }
     }
 
